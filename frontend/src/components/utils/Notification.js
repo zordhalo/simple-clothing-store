@@ -1,22 +1,29 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { Alert } from 'react-bootstrap'
 
 /**
- * Bootstrap notification wrapper
+ * React Bootstrap notification wrapper
  * @param {array} notification - A STATE tuple where the first element is the notification text,
- * and the second is the alert color class, see https://getbootstrap.com/docs/4.4/components/alerts/
+ * and the second is the alert color class (alert-success, alert-danger, etc.)
  * @param {function} setNotification - Function for setting the notification state
  */
 const Notification = ({notification, setNotification}) => {
   if (notification.length === 2) {
+    // Convert Bootstrap alert class (alert-success, alert-danger) to React Bootstrap variant (success, danger)
+    const variant = notification[1].replace('alert-', '');
+    
     return (
-      <div className={`alert ${notification[1]} alert-dismissible fade show`} role="alert">
+      <Alert 
+        variant={variant} 
+        dismissible 
+        onClose={() => setNotification([])}
+      >
         {notification[0]}
-        <button onClick={() => setNotification([])} type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
+      </Alert>
     )
   } else {
-    return (<div></div>)
+    return null;
   }
 }
 

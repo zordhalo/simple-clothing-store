@@ -1,11 +1,13 @@
 import React, {useEffect, useState} from 'react'
 import {
-  Route,
+  Route, 
+  Routes,
   BrowserRouter as Router,
+  useLocation
 } from 'react-router-dom'
-import {AnimatedSwitch} from 'react-router-transition'
 import {Helmet} from 'react-helmet'
 import axios from 'axios'
+import {CSSTransition, TransitionGroup} from 'react-transition-group'
 
 import localStorageService from './services/localstorage'
 import productsService from './services/products'
@@ -18,6 +20,33 @@ import Navigation from './components/Navigation'
 import Order from './components/order/Order'
 import Product from './components/Product'
 import Store from './components/Store'
+
+// Wrapper components to handle params in React Router v6
+const ProductWrapper = ({ productById, addToCart }) => {
+  const location = useLocation();
+  const id = location.pathname.split('/').pop();
+  
+  return productById(id) ? (
+    <Product product={productById(id)} addToCart={addToCart} />
+  ) : (
+    <Loader />
+  );
+};
+
+const OrderWrapper = ({ setOrderNotification, addOrder, orders, storeInfo }) => {
+  const location = useLocation();
+  const id = parseInt(location.pathname.split('/').pop());
+  
+  return (
+    <Order
+      orderId={id}
+      setOrderNotification={setOrderNotification}
+      addOrder={addOrder}
+      orders={orders}
+      storeInfo={storeInfo}
+    />
+  );
+};
 
 const App = () => {
   const [cart, setCart] = useState(localStorageService.getCart())
@@ -77,14 +106,9 @@ const App = () => {
               </button>
               Our store currently only supports modern browsers, sorry!
             </div>
-            <AnimatedSwitch
-              atEnter={{opacity: 0}}
-              atLeave={{opacity: 0}}
-              atActive={{opacity: 1}}
-              className="row switch-wrapper"
-            >
-              <Route exact path="/" render={() => <Store products={products} />} />
-              <Route exact path="/cart" render={() =>
+            <Routes>
+              <Route path="/" element={<Store products={products} />} />
+              <Route path="/cart" element={
                 <Cart
                   cart={cart}
                   removeFromCart={removeFromCart}
@@ -92,24 +116,20 @@ const App = () => {
                   applyDiscount={applyDiscount}
                   clearCart={clearCart} />
               } />
-              <Route exact path="/product/:id" render={
-                ({match}) =>
-                  productById(match.params.id) ?
-                    <Product
-                      product={productById(match.params.id)}
-                      addToCart={addToCart} /> :
-                    <Loader />
+              <Route path="/product/:id" element={
+                <ProductWrapper
+                  productById={productById}
+                  addToCart={addToCart}
+                />
               } />
-              <Route exact path="/order/:id" render={
-                ({match}) =>
-                  <Order
-                    orderId={parseInt(match.params.id)}
-                    setOrderNotification={setOrderNotification}
-                    addOrder={addOrder}
-                    orders={orders}
-                    storeInfo={storeInfo} />
+              <Route path="/order/:id" element={
+                <OrderWrapper
+                  setOrderNotification={setOrderNotification}
+                  addOrder={addOrder}
+                  orders={orders}
+                  storeInfo={storeInfo} />
               } />
-            </AnimatedSwitch>
+            </Routes>
           </div>
         </Router>
         <footer className="justify-content-center text-center">

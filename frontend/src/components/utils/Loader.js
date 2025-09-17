@@ -1,14 +1,15 @@
 import React from 'react'
+import { Spinner } from 'react-bootstrap'
 
 /**
- * Wrapper for Bootstrap loader that can be included
+ * React Bootstrap loader component that can be included
  * instead of a page if the content isn't ready.
  */
 const Loader = () => (
   <div className="d-flex justify-content-center">
-    <div className="spinner-border m-5" role="status">
-      <span className="sr-only"></span>
-    </div>
+    <Spinner animation="border" role="status" className="m-5">
+      <span className="visually-hidden">Loading...</span>
+    </Spinner>
   </div>
 )
 
