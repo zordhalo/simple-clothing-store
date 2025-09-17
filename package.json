@@ -20,7 +20,7 @@
     "express": "^4.17.1"
   },
   "engines": {
-    "node": "13.14.x"
+    "node": ">=16"
   },
   "repository": {
     "url": "https://github.com/kerkkoh/simple-clothing-store"
@@ -39,5 +39,8 @@
     "eslint": "^7.26.0",
     "eslint-config-google": "^0.14.0",
     "nodemon": "^3.1.10"
+  },
+  "engines": {
+    "node": ">=16"
   }
 }

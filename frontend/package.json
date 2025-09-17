@@ -9,7 +9,7 @@
     "currency.js": "^2.0.3",
     "jquery": "^3.6.0",
     "moment": "^2.29.4",
-    "node-sass": "npm:sass@^1.32.13",
+    "sass": "^1.63.0",
     "popper.js": "^1.16.1",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
@@ -19,7 +19,7 @@
     "react-paypal-button-v2": "^2.6.1",
     "react-router-dom": "^5.1.2",
     "react-router-transition": "^2.1.0",
-    "react-scripts": "^4.0.3",
+    "react-scripts": "^5.0.1",
     "react-transition-group": "^4.4.1"
   },
   "scripts": {
