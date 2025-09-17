@@ -228,5 +228,21 @@ app.get('/api/discount/:code', (req, res) => {
 })
 
 const listener = app.listen(process.env.PORT || 3001, () => {
-  console.log('The clothing store is listening on port ' + listener.address().port)
+  const port = listener.address().port
+  const host = process.env.HOST || 'localhost'
+  const backendUrl = `http://${host}:${port}`
+
+  if (process.env.NODE_ENV === 'production') {
+    console.log(`Server running: ${backendUrl}`)
+    console.log('The clothing store is serving the built frontend from the `build/` directory')
+  } else {
+    // Development: frontend dev server typically runs on 3000
+    const frontendPort = process.env.FRONTEND_PORT || 3000
+    const frontendUrl = `http://${host}:${frontendPort}`
+
+    console.log('The clothing store backend is listening on port ' + port)
+    console.log(`Backend API: ${backendUrl}`)
+    console.log(`Frontend (dev): ${frontendUrl}`)
+    console.log('Open the app in your browser at the frontend URL above')
+  }
 })

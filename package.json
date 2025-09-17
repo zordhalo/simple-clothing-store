@@ -6,10 +6,12 @@
   "scripts": {
     "start": "node server.js",
     "watch": "nodemon server.js",
-    "build-tux": "cd frontend && npm run build && mv build ../ && cd ../ && npm start",
-    "build-win": "cd frontend && npm run build && move build ../ && cd ../ && npm start",
-    "build-tux-clean": "rmdir -r build && npm run build-tux",
-    "build-win-clean": "RMDIR build /S && npm run build-win"
+    "dev": "concurrently \"npm start\" \"cd frontend && npm start\"",
+    "build-frontend": "cd frontend && npm ci && npm run build",
+    "build-tux": "npm run build-frontend && mv frontend/build ../build && npm start",
+    "build-win": "npm run build-frontend && move frontend\\build ..\\build && npm start",
+    "build-tux-clean": "rm -rf build && npm run build-tux",
+    "build-win-clean": "if exist build rmdir /S /Q build && npm run build-win"
   },
   "dependencies": {
     "@paypal/checkout-server-sdk": "^1.0.2",
@@ -33,6 +35,7 @@
     "javascript"
   ],
   "devDependencies": {
+    "concurrently": "^7.6.0",
     "eslint": "^7.26.0",
     "eslint-config-google": "^0.14.0",
     "nodemon": "^3.1.10"
